@@ -7,6 +7,10 @@ class WorldCup
   end
 
   def active_players_by_position(position)
-    @teams.inject([]) { |ans, team| ans += team.players_by_position(position) }
+    players = []
+    @teams.each do |team|
+      players += team.players_by_position(position) if !team.eliminated?
+    end
+    players
   end
 end
