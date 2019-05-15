@@ -7,9 +7,19 @@ class WorldCup
   end
 
   def active_players_by_position(position)
-    players = []
+    @teams.inject([]) do |players, team|
+      players.push(*(team.players_by_position(position))) if !team.eliminated?
+      players
+    end
+  end
+
+  def all_players_by_position
+    players = Hash.new
     @teams.each do |team|
-      players += team.players_by_position(position) if !team.eliminated?
+      team.players.each do |player|
+        players[player.position] ||= []
+        players[player.position] << player
+      end
     end
     players
   end
